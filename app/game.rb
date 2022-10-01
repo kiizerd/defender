@@ -5,9 +5,7 @@ class Game
     setup
     render
 
-    # state.player.tick(args)
-    input_vector = inputs.directional_vector
-    state.player.move(*input_vector) if input_vector
+    state.player.tick(args)
   end
 
   def setup
@@ -17,7 +15,10 @@ class Game
     state.map   ||= { tiles: generate_map_tiles }
     state.walls ||= [Wall.new(state.map.tiles[[5, 1]], 5, :right)]
 
-    state.player ||= Player.new(x: grid.w.half, y: grid.h.half, w: 26, h: 30, rgba: BLUE)
+    player_opts ||= {
+      motion_speed: 15, motion_decay: 0.6
+    }
+    state.player ||= Player.new(x: grid.w.half, y: grid.h.half, w: 26, h: 30, rgba: BLUE, **player_opts)
   end
 
   def render

@@ -1,12 +1,19 @@
 class Player < Arbor::Entity
   include Component::Position
   include Component::Size
-  include Component::Motion
-  # prepend Component::Sprite
+  include Component::ComplexMotion
+
   attr_sprite
 
   def initialize(opts = {})
     super(opts)
+  end
+
+  def tick(args)
+    input_vector = args.inputs.directional_vector
+    move(*input_vector[0..1]) if input_vector
+    
+    tick_motion
   end
 end
 #     # attr_reader :shape
